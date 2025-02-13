@@ -1,4 +1,3 @@
-
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -12,6 +11,7 @@ const loginRoutes = require("./routes/loginRoutes");
 require("dotenv").config();
 
 
+const authController = require("./controllers/authController");
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(cors({}));
@@ -33,4 +33,35 @@ sequelize
   .catch((err) => {
     console.error("Unable to connect to the database:", err);
   });
- 
+
+app.post('/send-otp', (req, res) => {
+
+    const {email} = req.body;
+
+    authController.sendEmail(email).then((result) => {
+        console.log('email: ', email);
+        res.status(200).send({token: result});
+    })
+
+})
+
+app.post("/verify-otp", (req, res) => {
+
+    const {otp, encryptedData} = req.body;
+
+    authController.verifyOTP(otp, encryptedData).then((verified) => {
+        if(verified) {
+            res.status(200).send({message: 'Otp verified!'});
+        }else{
+            res.status(401).send({message: 'Otp verification failed!'});
+        }
+    })
+
+})
+
+
+
+// Start server
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
