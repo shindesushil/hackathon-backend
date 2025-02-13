@@ -5,13 +5,13 @@ const bodyParser = require("body-parser");
 const sequelize = require("./config/database");
 const loginRoutes = require("./routes/loginRoutes");
 // const authRoutes = require("./routes/authRoutes");
+const authController = require("./controllers/authController");
 
 
 
 require("dotenv").config();
 
 
-const authController = require("./controllers/authController");
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(cors({}));
