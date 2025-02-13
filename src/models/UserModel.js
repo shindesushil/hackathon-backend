@@ -39,16 +39,44 @@ const User = sequelize.define('User', {
     type: DataTypes.ENUM('User','Therapists'),
     allowNull: true,
   },
-  createdAt: {
-    type: DataTypes.DATE,
+  qualification: {
+    type: DataTypes.STRING(100),
     allowNull: true,
-    defaultValue: null,
   },
-  updatedAt: {
-    type: DataTypes.DATE,
+  specialization: {
+    type: DataTypes.ENUM('Depression','Anxiety','Adult ADHD','Social Anxiety','Women Health'),
     allowNull: true,
-    defaultValue: DataTypes.NOW,
-  }
+  },
+  yearOfExperience: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+  },
+  licenceNumber: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+  },
+  fees: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+  },
+  modeOfCommunication: {
+    type: DataTypes.ENUM('Online','Offline'),
+    allowNull: true,
+  },
+  language: {
+    type: DataTypes.ENUM('English','Hindi','Marathi'),
+    allowNull: true,
+  },
+  // createdAt: {
+  //   type: DataTypes.DATE,
+  //   allowNull: true,
+  //   defaultValue: null,
+  // },
+  // updatedAt: {
+  //   type: DataTypes.DATE,
+  //   allowNull: true,
+  //   defaultValue: DataTypes.NOW,
+  // }
 }, {
   tableName: 'users',
   timestamps: true,

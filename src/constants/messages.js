@@ -9,5 +9,8 @@ exports.messages = {
     BAD_REQUEST: 'Bad request',
     EMAIL_ALREADY_EXISTS: 'Email already exists',
     NOT_FOUND: 'Not found',
+    FETCH_SUCCESS: 'Therapists data', 
+    INVALID_OR_MISSING_SPECIALIZATION:'Invalid or missing specialization',
+    NO_THERAPISTS_FOUND_FOR_THE_GIVEN_SPECIALIZATION:'No therapists found for the given specialization',
     // Add more messages as needed
   };
