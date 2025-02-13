@@ -29,3 +29,20 @@ exports.login = async (req, res) => {
       res.status(OK).json({ status: INTERNAL_SERVER_ERROR, message: messages.INTERNAL_SERVER_ERROR, error });
     }
   };
+
+exports.userSignup = async (req, res) => {
+
+    try{
+        var userBody = req.body;
+        const existingUser = await User.findOne({ where: { email: userBody.email } });
+        if(existingUser){
+            return res.status(OK).json({ status:BAD_REQUEST, message:"User already exist" });
+        }
+        const userId = await User.create(userBody)
+        return res.status(OK).json({ status:OK, message:"User signed up" });
+    }catch (error){
+        console.log(error)
+        res.status(OK).json({ status: INTERNAL_SERVER_ERROR, message: messages.INTERNAL_SERVER_ERROR, error });
+    }
+
+}

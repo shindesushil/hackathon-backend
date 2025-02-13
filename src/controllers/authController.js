@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
 const encryptDecrypt = require("./utils/encrypt-decrypt");
 const {decrypt} = require("./utils/encrypt-decrypt");
+const {OK, INTERNAL_SERVER_ERROR, UNAUTHORIZED} = require("../constants/errorCode");
 
 
 
@@ -13,9 +14,11 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-exports.sendEmail = async (email) => {
+exports.sendEmail = async (req, res) => {
 
     try{
+
+        const {email} = req.body;
 
         const OTP = Math.floor(100000 + Math.random() * 900000)
 
@@ -26,23 +29,30 @@ exports.sendEmail = async (email) => {
             text: `OTP is ${OTP}`
         })
 
+        const response = encryptDecrypt.encrypt(OTP+"");
 
-
-        return encryptDecrypt.encrypt(OTP+"");
+        return res.status(200).send({status:OK, message:"OTP sent successfully", token:response});
     }catch (error){
         console.log('Error (while sending otp)', error);
-        return false
+        return res.status(200).send({status:INTERNAL_SERVER_ERROR, message:"Something went wrong"});
     }
 
 }
 
-exports.verifyOTP = async (OTP, encryptedObject) => {
+exports.verifyOTP = async (req, res) => {
     try{
-        var decryptedOTP = encryptDecrypt.decrypt(encryptedObject);
 
-        return parseInt(decryptedOTP) === parseInt(OTP)
+        const {otp, encryptedData} = req.body;
+
+        var decryptedOTP = encryptDecrypt.decrypt(encryptedData);
+
+        if(parseInt(decryptedOTP) === parseInt(otp)){
+            return res.status(200).send({status:OK, message:"OTP verified"});
+        }else{
+            return res.status(200).send({status:UNAUTHORIZED, message:"INVALID OTP"});
+        }
     }catch (error){
         console.log('Error (while verifying otp)', error);
-        return false
+        return res.status(200).send({status:INTERNAL_SERVER_ERROR, message:"Something went wrong"});
     }
 }

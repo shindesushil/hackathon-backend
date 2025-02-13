@@ -5,7 +5,7 @@ require('dotenv').config();
 const sequelize = new Sequelize(
   'blue',
   'root',
-  '',
+  'root',
   {
     host: 'localhost',
     dialect: 'mysql',
