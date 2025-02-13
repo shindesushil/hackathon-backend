@@ -29,3 +29,38 @@ exports.login = async (req, res) => {
       res.status(OK).json({ status: INTERNAL_SERVER_ERROR, message: messages.INTERNAL_SERVER_ERROR, error });
     }
   };
+
+
+  exports.signUpAsTherapists = async (req, res) => {
+    try {
+      const {
+        name, email, password, phone, gender, city, signUpAs,
+        qualification, specialization, yearOfExperience, licenceNumber,
+        fees, modeOfCommunication, language
+      } = req.body;
+  
+      // Check if user already exists
+      const existingUser = await User.findOne({ where: { email } });
+      if (existingUser) {
+        return res.status(BAD_REQUEST).json({ status: BAD_REQUEST, message: messages.EMAIL_ALREADY_EXISTS });
+      }
+  
+      // Hash password before saving
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      // Create new user
+      const newUser = await User.create({
+        name, email, password: hashedPassword, phone, gender, city, signUpAs,
+        qualification, specialization, yearOfExperience, licenceNumber,
+        fees, modeOfCommunication, language
+      });
+  
+      res.status(OK).json({ status: OK, message: messages.SIGNUP_SUCCESS });
+  
+    } catch (error) {
+      res.status(INTERNAL_SERVER_ERROR).json({ status: INTERNAL_SERVER_ERROR, message: messages.INTERNAL_SERVER_ERROR, error });
+    }
+  };
+
+
+  
