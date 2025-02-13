@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const sequelize = require("./config/database");
 const loginRoutes = require("./routes/loginRoutes");
 const authRoutes = require("./routes/authRoutes");
+const assesmentRoutes = require("./routes/assesmentRoutes");
 // const authRoutes = require("./routes/authRoutes");
 const authController = require("./controllers/authController");
 const {OK, UNAUTHORIZED} = require("./constants/errorCode");
@@ -24,6 +25,7 @@ app.set("view engine", "ejs");
 
 app.use("/bluebuster-api/api", loginRoutes);
 app.use("/bluebuster-api/api", authRoutes);
+app.use("/bluebuster-api/api", assesmentRoutes);
 
 sequelize
   .sync()
